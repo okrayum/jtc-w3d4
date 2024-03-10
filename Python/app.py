@@ -1,33 +1,15 @@
 import sqlite3
+from schema import user_schema, post_schema, comment_schema
 
 con = sqlite3.connect("blog_app2.db")
 
 cur = con.cursor()
 
-cur.execute('''CREATE TABLE IF NOT EXISTS users (
-                id INTEGER PRIMARY KEY,
-                username TEXT UNIQUE,
-                email INTEGER UNIQUE
-            )''')
+cur.execute(user_schema)
+cur.execute(post_schema)
+cur.execute(comment_schema)
 
-cur.execute('''CREATE TABLE IF NOT EXISTS posts (
-                id INTEGER PRIMARY KEY,
-                user_id INTEGER,
-                title TEXT,
-                content TEXT,
-                FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
-            )''')
-
-cur.execute('''CREATE TABLE IF NOT EXISTS comments (
-                id INTEGER PRIMARY KEY,
-                user_id INTEGER,
-                post_id INTEGER,
-                content TEXT,
-                FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE,
-                FOREIGN KEY (post_id) REFERENCES posts(id) 
-            )''')
-
-cur.execute("INSERT INTO users (username, email) VALUES (?, ?)", ("jason@jtc", "jason@mail.com"))
+cur.execute("INSERT INTO users (username, email) VALUES (?, ?)", ("jason123@jtc", "jason123@mail.com"))
 
 cur.execute("INSERT INTO posts (user_id, title, content) VALUES (?, ?, ?)", ("2", "Spring Break!", "No class next week for Spring break!"))
 
@@ -44,5 +26,4 @@ cur.execute("SELECT * FROM comments")
 print(cur.fetchall())
 
 con.commit()
-
 con.close()
