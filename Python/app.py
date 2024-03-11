@@ -9,19 +9,91 @@ cur.execute(user_schema)
 cur.execute(post_schema)
 cur.execute(comment_schema)
 
-cur.execute("INSERT INTO users (username, email) VALUES (?, ?)", ("jason123@jtc", "jason123@mail.com"))
+# Create a user here
+try:
+  username = "johnny"
+  email = "johnny@mail.com"
 
-cur.execute("INSERT INTO posts (user_id, title, content) VALUES (?, ?, ?)", ("2", "Spring Break!", "No class next week for Spring break!"))
+  cur.execute("INSERT INTO users (username, email) VALUES (?, ?)", ("sammy123", "sammy123@mail.com"))
+  print("User created!")
+except sqlite3.IntegrityError as e:
+  print("User not created successfully:", e)
 
-cur.execute("INSERT INTO comments (user_id, post_id, content) VALUES (?, ?, ?)", ("1", "3", "Yeah Spring Break!"))
+# Update a users email here
+try:
+  email = "test_mail@mail.com"
+  username = "unit_test_user5"
 
+  cur.execute("UPDATE users SET email=? WHERE username=?", (email, username))
+  if cur.rowcount == 0:
+    print("No were changes made.")
+  else:
+    print("Email updated!")  
+except sqlite3.Error as e:
+  print("Error occurred.", e)  
 
+# Update a users username here
+try:
+  new_username = "sammy"
+  old_username = "sammy123"
+
+  cur.execute("UPDATE users SET username=? WHERE username=?", (new_username, old_username))
+  if cur.rowcount == 0:
+    print("No were changes made.")
+  else:
+    print("Username updated!")
+except sqlite3.Error as e:
+  print("Error occurred:", e)    
+
+# Create a post here
+try:
+  user_id = "9"
+  title = "Another test"
+  content = "Testing 123"
+
+  cur.execute("INSERT INTO posts (user_id, title, content) VALUES (?, ?, ?)", (user_id, title, content))
+  if cur.rowcount == 0:
+    print("Post not created.")
+  else:
+    print("Post created!")  
+except sqlite3.Error as e:
+  print("Error occurred:", e)
+
+# Create a comment here
+try:
+  user_id = "9"
+  post_id = "1"
+  content = "Testing"
+
+  cur.execute("INSERT INTO comments (user_id, post_id, content) VALUES (?, ?, ?)", (user_id, post_id, content))
+  if cur.rowcount == 0:
+    print("Comment not created.")
+  else:
+    print("Comment created!")
+except sqlite3.Error as e:
+  print("Error occurred:". e)      
+
+# Delete a user here
+try:
+  username = "rita"
+
+  cur.execute("DELETE FROM users WHERE username=?", (username,))
+  if cur.rowcount == 0:
+    print("User not deleted.")
+  else:
+    print("User deleted!")
+except sqlite3.Error as e:
+  print("Error occurred:", e)
+
+# Displays all users in the terminal
 cur.execute("SELECT * FROM users")
 print(cur.fetchall())
 
+# Displays all posts in the terminal
 cur.execute("SELECT * FROM posts")
 print(cur.fetchall())
 
+# Displays all comments in the terminal
 cur.execute("SELECT * FROM comments")
 print(cur.fetchall())
 
