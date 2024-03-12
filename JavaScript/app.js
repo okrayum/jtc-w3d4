@@ -18,21 +18,21 @@ db.run("INSERT INTO users (username, email) VALUES (?, ?)", ["new_user@jtc", "ne
 });
 
 // Update user email here
-// db.run("UPDATE users SET email=? WHERE username=?", ["Tester@mail.com", "Tester"], (err) => {
-//   if (err) {
-//     console.log("Error updating email:", err);
-//     return;
-//   }
-//   console.log("Email changed!");
+db.run("UPDATE users SET email=? WHERE username=?", ["Tester@mail.com", "Tester"], (err) => {
+  if (err) {
+    console.log("Error updating email:", err);
+    return;
+  }
+  console.log("Email changed!");
 
-//   db.all("SELECT * FROM users", [], (err, rows) => {
-//     if (err) {
-//       console.error("Error retrieving data:", err);
-//       return;
-//     }
-//     console.log("All users:", rows);
-//   });
-// })
+  db.all("SELECT * FROM users", [], (err, rows) => {
+    if (err) {
+      console.error("Error retrieving data:", err);
+      return;
+    }
+    console.log("All users:", rows);
+  });
+})
 
 // Create a post here
 db.run("INSERT INTO posts (user_id, title, content) VALUES (?, ?, ?)", ["3", "Hello", "New here!"], function (err) {
@@ -69,20 +69,20 @@ db.run("INSERT INTO comments (user_id, post_id, content) VALUES (?, ?, ?)", ["3"
 });
 
 // Delete a user here
-// db.run("DELETE FROM users WHERE username=?", ["Tester"], (err) => {
-//   if (err) {
-//     console.log("Error deleting user:", err);
-//     return;
-//   }
-//   console.log("User deleted!");
+db.run("DELETE FROM users WHERE username=?", ["Tester"], (err) => {
+  if (err) {
+    console.log("Error deleting user:", err);
+    return;
+  }
+  console.log("User deleted!");
 
-//   db.all("SELECT * FROM users", [], (err, rows) => {
-//     if (err) {
-//       console.error("Error retrieving data:", err);
-//       return;
-//     }
-//     console.log("All users:", rows);
-//   });
-// });
+  db.all("SELECT * FROM users", [], (err, rows) => {
+    if (err) {
+      console.error("Error retrieving data:", err);
+      return;
+    }
+    console.log("All users:", rows);
+  });
+});
 
 db.close();
