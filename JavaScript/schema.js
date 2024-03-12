@@ -12,7 +12,7 @@ CREATE TABLE IF NOT EXISTS posts (
   user_id INTEGER,
   title TEXT,
   content TEXT,
-  FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
+  FOREIGN KEY (user_id) REFERENCES users(id)
 )
 `;
 
@@ -22,7 +22,7 @@ CREATE TABLE IF NOT EXISTS comments (
   user_id INTEGER,
   post_id INTEGER,
   content TEXT,
-  FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE,
+  FOREIGN KEY (user_id) REFERENCES users(id)
   FOREIGN KEY (post_id) REFERENCES posts(id)
 )
 `;
