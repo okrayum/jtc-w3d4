@@ -2,6 +2,7 @@ import unittest
 import sqlite3
 
 con = sqlite3.connect("blog_app2.db")
+con.execute("PRAGMA foreign_keys = ON;")
 cur = con.cursor()
 
 class TestDataBase(unittest.TestCase):
@@ -15,25 +16,25 @@ class TestDataBase(unittest.TestCase):
 
   # Test to create a new user  
   def test_create_user(self):
-      self.cur.execute("INSERT INTO users (username, email) VALUES (?, ?)", ("unit_test_user5", "test_user5@mail.com"))
+      self.cur.execute("INSERT INTO users (username, email) VALUES (?, ?)", ("test_user", "test_user@mail.com"))
       self.con.commit()
-      self.cur.execute("SELECT * FROM users WHERE username=?", ("unit_test_user5",))
+      self.cur.execute("SELECT * FROM users WHERE username=?", ("test_user",))
       user = self.cur.fetchone()
       self.assertIsNotNone(user, "User creation failed") 
       print("User created successfully")
 
-  # Test to pudate an existing users email  
+  # Test to udate an existing users email  
   def test_update_user(self):
-      self.cur.execute("UPDATE users SET email=? WHERE username=?", ("tammy99@mail.com", "tammy@jtc"))
+      self.cur.execute("UPDATE users SET email=? WHERE username=?", ("test@mail.com", "test_user"))
       self.con.commit()
-      self.cur.execute("SELECT * FROM users WHERE username=?", ("tammy@jtc",))
+      self.cur.execute("SELECT * FROM users WHERE username=?", ("test_user",))
       user = self.cur.fetchone()
-      self.assertEqual(user[2], "tammy99@mail.com") 
+      self.assertEqual(user[2], "test@mail.com") 
       print("User updated successfully")
 
   # Test to add a post
   def test_create_post(self):
-      self.cur.execute("INSERT INTO posts (user_id, title, content) VALUES (?, ?, ?)", ("5", "Hello!", "New user here."))
+      self.cur.execute("INSERT INTO posts (user_id, title, content) VALUES (?, ?, ?)", ("2", "Hello!", "New user here."))
       self.con.commit()
       self.cur.execute("SELECT * FROM posts WHERE title=?", ("Hello!",))
       post = self.cur.fetchone()
@@ -52,15 +53,15 @@ class TestDataBase(unittest.TestCase):
   # Test to make sure can NOT create a new user with an existing user name
   def test_creating_user_with_existing_username(self):
       with self.assertRaises(sqlite3.IntegrityError):
-          self.cur.execute("INSERT INTO users (username, email) VALUES (?, ?)", ("tammy@jtc", "tammy77@mail.com"))
+          self.cur.execute("INSERT INTO users (username, email) VALUES (?, ?)", ("jason123", "jason@mail.com"))
           self.con.commit()
       print("Username already exists")    
 
   # Test to delete a user
   def test_delete_user(self):
-      self.cur.execute("DELETE FROM users WHERE username=?", ("unit_test",))
+      self.cur.execute("DELETE FROM users WHERE username=?", ("test_delete",))
       self.con.commit()
-      self.cur.execute("SELECT * FROM users WHERE username=?", ("unit_test",))
+      self.cur.execute("SELECT * FROM users WHERE username=?", ("test_delete",))
       user = self.cur.fetchone()
       self.assertIsNone(user, "User deletion failed")
       print("User deleted successfully")
